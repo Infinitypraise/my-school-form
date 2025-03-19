@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from "react";
-import { useForm, ValidationError } from '@formspree/react';
 import Header from "./component/header";
 import Page1 from "./component/page1";
 import Page2 from "./component/page2";
