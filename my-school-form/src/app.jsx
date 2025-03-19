@@ -38,36 +38,77 @@ export default function App() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check for any missing fields
     const missingFields = [];
     for (const [key, value] of Object.entries(formData)) {
-      // Check for empty string or null for file inputs
       if (value === "" || value === null) {
         missingFields.push(key);
       }
     }
-
     if (missingFields.length > 0) {
-      alert(
-        "Please fill in all required fields: " + missingFields.join(", ")
-      );
+      alert("Please fill in all required fields: " + missingFields.join(", "));
       return;
     }
 
-    // All required fields are present, process the form data.
-    console.log("Final Form Data:", formData);
-    // For example, you could send the data to an API here.
+    // Convert the formData to a FormData object
+    const submissionData = new FormData();
+    for (const key in formData) {
+      submissionData.append(key, formData[key]);
+    }
+
+    try {
+      const response = await fetch("https://formspree.io/f/mldjgjbq", {
+        method: "POST",
+        body: submissionData,
+      });
+
+      if (response.ok) {
+        alert("Form submission successful! Thank you.");
+        // Optionally, clear the form here if desired:
+        // setFormData({ /* reset state values here */ });
+      } else {
+        alert("There was a problem submitting your form. Please try again later.");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("An error occurred during submission. Please try again.");
+    }
   };
+  function determineH1() {
+    if (page ===1) {
+      return "Student's Details"
+    } else if (page ===2) {
+      return "Education History"
+    } else {
+      return "Parent/Guardian's Detail"
+    }
+    
+  }
+  
+  
 
   return (
     <Fragment>
       <Header />
+      <div className="body">
+    <div className="form">
+      <h2>{determineH1()}</h2>
+      <h3>{page} of 3</h3>
+      <form onSubmit={handleSubmit}>
       {page === 1 && (
-        <Page1 formData={formData} handleChange={handleChange} nextPage={() => setPage(2)} />
+        <Page1 
+        determineH1={determineH1}
+        page={page}
+        formData={formData}
+        handleChange={handleChange}
+        nextPage={() => setPage(2)} />
       )}
       {page === 2 && (
         <Page2
+          page={page}
           formData={formData}
           handleChange={handleChange}
           prevPage={() => setPage(1)}
@@ -76,12 +117,16 @@ export default function App() {
       )}
       {page === 3 && (
         <Page3
+          page={page}
           formData={formData}
           handleChange={handleChange}
           prevPage={() => setPage(2)}
           handleSubmit={handleSubmit}
         />
       )}
+      </form>
+      </div>
+      </div>
     </Fragment>
   );
 }

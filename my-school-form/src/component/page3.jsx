@@ -1,12 +1,8 @@
-import React from "react";
+import React, { Fragment } from "react";
 
-export default function Page3({ formData, handleChange, prevPage, handleSubmit }) {
+export default function Page3({formData, handleChange, prevPage, handleSubmit }) {
   return (
-    <div className="body">
-    <div className="form">
-      <h2>Parent/Guardian's Details</h2>
-      <h3>Page 3 of 3</h3>
-      <form onSubmit={handleSubmit}>
+    <Fragment>
         <label htmlFor="GuardianName">Guardian's Full Name</label>
         <input
           type="text"
@@ -56,13 +52,11 @@ export default function Page3({ formData, handleChange, prevPage, handleSubmit }
 
         
           <button className="submit" type="submit">Submit</button>
-      </form>
       <div className="button">
         <button className="prev" type="button" onClick={prevPage}>
           Prev
         </button>
       </div>
-    </div>
-    </div>
+      </Fragment>
   );
 }

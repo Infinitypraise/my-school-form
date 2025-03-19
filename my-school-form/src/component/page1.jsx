@@ -1,13 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 import uploadicon from "./upload.svg"
 
-export default function Page1({ formData, handleChange, nextPage }) {
+export default function Page1({formData, handleChange, nextPage }) {
   return (
-  <div className="body">
-    <div className="form">
-      <h2>Student Details</h2>
-      <h3>Page 1 of 3</h3>
-      <form>
+    <Fragment>
         <label htmlFor="firstName">First Name</label>
         <input
           type="text"
@@ -128,13 +124,11 @@ export default function Page1({ formData, handleChange, nextPage }) {
           value={formData.nationality}
           onChange={handleChange}
         />
-      </form>
       <div className="button">
         <button className="next" type="button" onClick={nextPage}>
           Next
         </button>
       </div>
-    </div>
-    </div>
+      </Fragment>
   );
 }

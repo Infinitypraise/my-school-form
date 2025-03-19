@@ -1,12 +1,8 @@
-import React from "react";
+import React, { Fragment } from "react";
 
-export default function Page2({ formData, handleChange, prevPage, nextPage }) {
+export default function Page2({formData, handleChange, prevPage, nextPage }) {
   return (
-    <div className="body">
-    <div className="form">
-      <h2>Education History</h2>
-      <h3>Page 2 of 3</h3>
-      <form>
+    <Fragment>
         <label htmlFor="PSA">Primary School Attended</label>
         <input
           type="text"
@@ -42,7 +38,6 @@ export default function Page2({ formData, handleChange, prevPage, nextPage }) {
           value={formData.graduationDate}
           onChange={handleChange}
         />
-      </form>
       <div className="button">
         <button className="prev" type="button" onClick={prevPage}>
           Prev
@@ -51,7 +46,6 @@ export default function Page2({ formData, handleChange, prevPage, nextPage }) {
           Next
         </button>
       </div>
-    </div>
-    </div>
+      </Fragment>
   );
 }
