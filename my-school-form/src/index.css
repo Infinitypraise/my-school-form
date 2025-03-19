@@ -1,0 +1,95 @@
+header {
+    box-shadow: 0px 3px 3px 3px rgba(0, 0, 0, 0.211);
+    padding: 1px;
+}
+body{
+background-image:linear-gradient(rgba(0, 0, 0, 0.211), rgba(0, 0, 0, 0.211)), url(rm347-porpla-02-a-01.jpg);
+background-size: cover;
+background-repeat: no-repeat;
+background-attachment: fixed;
+margin: 0;
+font-family: Arial, sans-serif;
+}
+.body{
+    justify-content: center;
+    padding: 5%;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    padding: 10%;
+}
+.form{
+    max-width: 500px;
+    border-radius: 10px;
+    background-color: white;
+    opacity: 0.93;
+    margin-left: 20%;
+    margin-right: 20%;
+    box-shadow: 1px 1px 1px 1px #ccc;
+    padding: 10px;
+}
+
+.form select{
+    margin: 5px;
+    padding: 5px;
+    max-width: 415px;
+    border-radius: 30px;
+    border-color: #ccc;
+}
+.form input{
+    margin: 5px;
+    padding: 5px;
+    max-width: 400px;
+    border-radius: 30px;
+}
+.button{
+    display: flex;
+}
+.next{
+    margin: 5px;
+    padding: 5px;
+    color: #4CAF50;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    text-decoration: underline;
+}
+.submit{
+    margin: 5px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;   
+}
+.submit:hover{
+    text-decoration: underline;
+}
+.next::after{
+    content: '>';
+    margin-left: 3px;
+}
+.prev{
+    margin: 5px;
+    padding: 5px;
+    color: #4CAF50;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    margin-right: auto;
+    text-decoration: underline;
+}
+.prev::before{
+    content: '<';
+    margin-right: 3px;
+}
+
+.photo{
+    display: none;
+}
+.pIcon:hover{
+    color: #4CAF50;
+    cursor: pointer;
+}
