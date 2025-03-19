@@ -2,9 +2,9 @@
 import React, { Fragment, useState } from "react";
 import { useForm } from '@formspree/react';
 import Header from "./component/header";
-import Page1 from "./component/Page1";
-import Page2 from "./component/Page2";
-import Page3 from "./component/Page3";
+import Page1 from "./component/page1";
+import Page2 from "./component/page2";
+import Page3 from "./component/page3";
 
 
 export default function App() {
@@ -62,8 +62,6 @@ export default function App() {
       return;
     }
 
-    // In our final submission we also add a timestamp.
-    // (For file uploads, see note below.)
     const enrichedData = {
       ...formData,
       submittedAt: new Date().toISOString(),
