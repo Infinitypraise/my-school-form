@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react";
+import { useForm, ValidationError } from "@formspree/react";
 import Header from "./component/header";
 import Page1 from "./component/page1";
 import Page2 from "./component/page2";
@@ -41,42 +42,42 @@ export default function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check for any missing fields
     const missingFields = [];
     for (const [key, value] of Object.entries(formData)) {
       if (value === "" || value === null) {
         missingFields.push(key);
       }
     }
+    console.log("Missing fields:", missingFields);
     if (missingFields.length > 0) {
       alert("Please fill in all required fields: " + missingFields.join(", "));
       return;
     }
-
-    // Convert the formData to a FormData object
+  
+    // Build submission data
     const submissionData = new FormData();
-    for (const key in formData) {
-      submissionData.append(key, formData[key]);
-    }
-
+    Object.keys(formData).forEach((key) => {
+      // Optionally, only append if value exists (especially for optional fields)
+      if (formData[key] !== null) {
+        submissionData.append(key, formData[key]);
+      }
+    });
+  
     try {
       const response = await fetch("https://formspree.io/f/mldjgjbq", {
-        method: "POST",
         body: submissionData,
       });
-
+      console.log("Response status:", response.status);
       if (response.ok) {
         alert("Form submission successful! Thank you.");
-        // Optionally, clear the form here if desired:
-        // setFormData({ /* reset state values here */ });
       } else {
         alert("There was a problem submitting your form. Please try again later.");
       }
     } catch (error) {
-      console.error("Submission error:", error);
       alert("An error occurred during submission. Please try again.");
     }
   };
+  
   function determineH1() {
     if (page ===1) {
       return "Student's Details"
@@ -97,7 +98,7 @@ export default function App() {
     <div className="form">
       <h2>{determineH1()}</h2>
       <h3>{page} of 3</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} method="POST">
       {page === 1 && (
         <Page1 
         determineH1={determineH1}
