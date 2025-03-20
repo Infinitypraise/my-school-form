@@ -66,6 +66,10 @@ export default function App() {
     try {
       const response = await fetch("https://formspree.io/f/mldjgjbq", {
         body: submissionData,
+        method: "POST",
+        headers: {
+          'Accept': 'application/json'
+        }
       });
       console.log("Response status:", response.status);
       if (response.ok) {
