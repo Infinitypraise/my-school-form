@@ -41,14 +41,14 @@ export default function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    // Validate all fields
     const missingFields = [];
     for (const [key, value] of Object.entries(formData)) {
       if (value === "" || value === null) {
         missingFields.push(key);
       }
     }
-    console.log("Missing fields:", missingFields);
     if (missingFields.length > 0) {
       alert("Please fill in all required fields: " + missingFields.join(", "));
       return;
@@ -57,28 +57,38 @@ export default function App() {
     // Build submission data
     const submissionData = new FormData();
     Object.keys(formData).forEach((key) => {
-      // Optionally, only append if value exists (especially for optional fields)
       if (formData[key] !== null) {
         submissionData.append(key, formData[key]);
       }
     });
   
+    // IMPORTANT: Append an "email" field (Formspree expects this)
+    submissionData.append("email", formData.GuardianEmail);
+  
+    // Optional: Log the FormData entries for debugging
+    console.log("Submitting data:", [...submissionData.entries()]);
+  
     try {
       const response = await fetch("https://formspree.io/f/mldjgjbq", {
-        body: submissionData,
-        method: "POST",
+        method: "POST", // Ensure POST method is used
         headers: {
-          'Accept': 'application/json'
-        }
+          // "Content-Type" is NOT set manually because FormData sets it automatically.
+          "Accept": "application/json",
+        },
+        body: submissionData,
       });
+  
+      const data = await response.json();
+      console.log("Response data:", data);
       console.log("Response status:", response.status);
+  
       if (response.ok) {
         alert("Form submission successful! Thank you.");
       } else {
-        alert("There was a problem submitting your form. Please try again later.");
+        alert("There was a problem submitting your form: " + (data.error || "Please try again later."));
       }
     } catch (error) {
-      alert("An error occurred during submission. Please try again.");
+      alert("An error occurred during submission. Please try again. " + error.message);
     }
   };
   
