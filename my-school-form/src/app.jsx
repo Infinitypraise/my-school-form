@@ -57,6 +57,7 @@ export default function App() {
     // Build submission data
     const submissionData = new FormData();
     Object.keys(formData).forEach((key) => {
+      if (key === "photo") return;
       if (formData[key] !== null) {
         submissionData.append(key, formData[key]);
       }
@@ -64,7 +65,6 @@ export default function App() {
   
     // IMPORTANT: Append an "email" field (Formspree expects this)
     submissionData.append("email", formData.GuardianEmail);
-  
     // Optional: Log the FormData entries for debugging
     console.log("Submitting data:", [...submissionData.entries()]);
   
