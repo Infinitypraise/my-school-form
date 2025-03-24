@@ -38,12 +38,38 @@ export default function App() {
     }
   };
 
+  const uploadFileToCloudinary = async (file) => {
+    // Replace with your own Cloudinary details:
+    const cloudName = "dvxnquidt";
+    const uploadPreset = "my school photo upload"; // Unsigned upload preset
+
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", uploadPreset);
+
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/upload`,
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+      const fileData = await response.json();
+      // fileData.secure_url holds the image URL
+      return fileData.secure_url;
+    } catch (error) {
+      throw new Error("File upload failed: " + error.message);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   
     // Validate all fields
     const missingFields = [];
     for (const [key, value] of Object.entries(formData)) {
+      if (key === "photo") continue;
       if (value === "" || value === null) {
         missingFields.push(key);
       }
@@ -52,41 +78,57 @@ export default function App() {
       alert("Please fill in all required fields: " + missingFields.join(", "));
       return;
     }
-  
-    // Build submission data
+
+    let photoURL = "";
+    if (formData.photo) {
+      try {
+        photoURL = await uploadFileToCloudinary(formData.photo);
+      } catch (error) {
+        alert("Failed to upload photo: " + error.message);
+        return;
+      }
+    }
+
+    
     const submissionData = new FormData();
     Object.keys(formData).forEach((key) => {
-      if (formData[key] !== null) {
+      if (key === "photo") {
+        submissionData.append(key, photoURL);
+      } else {
         submissionData.append(key, formData[key]);
       }
     });
-  
-    // IMPORTANT: Append an "email" field (Formspree expects this)
+    
     submissionData.append("email", formData.GuardianEmail);
-    // Optional: Log the FormData entries for debugging
+
     console.log("Submitting data:", [...submissionData.entries()]);
-  
+
     try {
       const response = await fetch("https://formspree.io/f/mldjgjbq", {
-        method: "POST", // Ensure POST method is used
+        method: "POST",
         headers: {
-          // "Content-Type" is NOT set manually because FormData sets it automatically.
           "Accept": "application/json",
+          
         },
         body: submissionData,
       });
-  
+
       const data = await response.json();
       console.log("Response data:", data);
       console.log("Response status:", response.status);
-  
+
       if (response.ok) {
         alert("Form submission successful! Thank you.");
       } else {
-        alert("There was a problem submitting your form: " + (data.error || "Please try again later."));
+        alert(
+          "There was a problem submitting your form: " +
+            (data.error || "Please try again later.")
+        );
       }
     } catch (error) {
-      alert("An error occurred during submission. Please try again. " + error.message);
+      alert(
+        "An error occurred during submission. Please try again. " + error.message
+      );
     }
   };
   
